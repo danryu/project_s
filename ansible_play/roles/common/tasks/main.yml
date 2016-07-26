@@ -18,7 +18,7 @@
     - docker-compose
   become: true
 
-- name: run docker-compose from project directory
+- name: launch complete deployment using docker-compose...
   become: true
   docker_service:
     project_src: /vagrant/docker_conf
