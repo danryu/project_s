@@ -1,0 +1,32 @@
+version: '2'
+services:
+  proxy:
+    image: nginx
+    links:
+      - appnode1:appnode1
+      - appnode2:appnode2
+    ports:
+      - "80:80"
+    command: /bin/bash -c "nginx -g 'daemon off;'"
+    volumes:
+      - /vagrant/docker_conf/rrobin.conf:/etc/nginx/nginx.conf
+  appnode1:
+    image: golang
+    working_dir: /go/src/sampleHi
+    command: go run main.go
+    container_name: appnode1
+    hostname: appnode1
+    volumes:
+      - /vagrant/sampleHi:/go/src/sampleHi
+    ports:
+      - "8484"
+  appnode2:
+    image: golang
+    working_dir: /go/src/sampleHi
+    command: go run main.go
+    container_name: appnode2
+    hostname: appnode2
+    volumes:
+      - /vagrant/sampleHi:/go/src/sampleHi
+    ports:
+      - "8484"

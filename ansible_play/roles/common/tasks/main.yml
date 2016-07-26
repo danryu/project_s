@@ -1,0 +1,26 @@
+## Main ansible task 
+
+- name: configure Docker apt repo
+  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-trusty main' state=present 
+  become: true
+
+# install dependencies
+- name: install apt packages
+  apt: name={{item}} state=installed force=yes
+  with_items:
+    - docker-engine
+    - python-pip
+  become: true
+
+- name: install pip packages
+  pip: name={{item}} state=present
+  with_items:
+    - docker-compose
+  become: true
+
+- name: run docker-compose from project directory
+  become: true
+  docker_service:
+    project_src: /vagrant/docker_conf
+    restarted: true
+
